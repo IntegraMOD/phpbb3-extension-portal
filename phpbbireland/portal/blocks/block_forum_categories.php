@@ -2,15 +2,10 @@
 /**
 *
 * Kiss Portal extension for the phpBB Forum Software package.
-* @copyright (c) 2014 Michael O’Toole <http://www.phpbbireland.com>
+* @copyright (c) 2024 Michael O’Toole <http://www.phpbbireland.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
-
-if (!defined('IN_PHPBB'))
-{
-   exit;
-}
 
 global $user, $phpbb_root_path;
 
@@ -67,13 +62,13 @@ function display_forums_categories()
 	);
 
 	$sql = $db->sql_build_query('SELECT', array(
-		'SELECT'	=> $sql_array['SELECT'],
-		'FROM'		=> $sql_array['FROM'],
-		'LEFT_JOIN'	=> $sql_array['LEFT_JOIN'],
-
-		'WHERE'		=> $sql_where,
-
-		'ORDER_BY'	=> 'f.left_id',
+	    'SELECT'    => $sql_array['SELECT'],
+	    'FROM'      => $sql_array['FROM'],
+	    'LEFT_JOIN' => $sql_array['LEFT_JOIN'],
+	 
+	    'WHERE'     => $sql_where,
+	 
+	    'ORDER_BY'  => 'f.left_id',
 	));
 
 	$result = $db->sql_query($sql);
@@ -121,9 +116,7 @@ function display_forums_categories()
 		}
 
 		// Count the difference of real to public topics, so we can display an information to moderators
-		//$row['forum_id_unapproved_topics'] = ($auth->acl_get('m_approve', $forum_id) && ($row['forum_topics_real'] != $row['forum_topics'])) ? $forum_id : 0;
 		$row['forum_id_unapproved_topics'] = ($auth->acl_get('m_approve', $forum_id) && ($row['forum_topics_approved'] != $row['forum_topics_approved'])) ? $forum_id : 0;
-		//$row['forum_topics'] = ($auth->acl_get('m_approve', $forum_id)) ? $row['forum_topics_real'] : $row['forum_topics'];
 		$row['forum_topics'] = ($auth->acl_get('m_approve', $forum_id)) ? $row['forum_topics_approved'] : $row['forum_topics_approved'];
 
 		if ($row['parent_id'] == $root_data['forum_id'] || $row['parent_id'] == $branch_root_id)
@@ -182,8 +175,8 @@ function display_forums_categories()
 				'FORUM_NAME'			=> $row['forum_name'],
 				'FORUM_DESC'			=> generate_text_for_display($row['forum_desc'], $row['forum_desc_uid'], $row['forum_desc_bitfield'], $row['forum_desc_options']),
 				'FORUM_IMAGE_SRC'		=> ($row['forum_image']) ? $row['forum_image'] : $default_icon,
-				'U_VIEWFORUM'			=> append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $row['forum_id']))
-			);
+				'U_VIEWFORUM'			=> append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $row['forum_id'])
+			));
 
 			continue;
 		}
@@ -224,11 +217,11 @@ function display_forums_categories()
 
 				if ($subforum_row['display'] && $subforum_row['name'])
 				{
-					$subforums_list[] = array(
+					$subforums_list[] = [
 						'link'		=> append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $subforum_id),
 						'name'		=> $subforum_row['name'],
 						'unread'	=> $subforum_unread,
-					);
+					];
 				}
 				else
 				{
@@ -332,16 +325,16 @@ function display_forums_categories()
 
 			'SUBFORUMS'				=> $s_subforums_list,
 			'U_VIEWFORUM'			=> $u_viewforum,
-
 		));
+
 		// Assign subforums loop for style authors
 		foreach ($subforums_list as $subforum)
 		{
-			$template->assign_block_vars('forumrow.subforum', array(
+			$template->assign_block_vars('forumrow.subforum', [
 				'U_SUBFORUM'	=> $subforum['link'],
 				'SUBFORUM_NAME'	=> $subforum['name'],
-				'S_UNREAD'		=> $subforum['unread'])
-			);
+				'S_UNREAD'		=> $subforum['unread']
+			]);
 		}
 
 		$last_catless = $catless;
@@ -361,4 +354,3 @@ function display_forums_categories()
 		'S_DISPLAY_CATS_ONLY' => false,
 	));
 }
-

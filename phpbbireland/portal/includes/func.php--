@@ -3,7 +3,7 @@
 *
 * Kiss Portal extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2022 Michael O’Toole <http://www.phpbbireland.com>
+* @copyright (c) 2014 Michael O’Toole <http://www.phpbbireland.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
@@ -30,8 +30,12 @@ class func
 	/* @var string phpEx */
 	protected $php_ext;
 
+
 	public function process_block_modules()
 	{
+
+		//var_dump('func.php > process_block_modules()');
+
 		global $phpbb_root_path, $config, $table_prefix, $helper;
 		global $db, $user, $avatar_img, $request, $template, $auth;
 		global $k_config, $k_groups, $k_blocks, $page_header;
@@ -46,9 +50,9 @@ class func
 
 		if (!$blocks_enabled)
 		{
-			$template->assign_vars([
+			$template->assign_vars(array(
 				'PORTAL_MESSAGE' => $user->lang('BLOCKS_DISABLED'),
-			]);
+			));
 		}
 
 		$all = '';
@@ -67,12 +71,12 @@ class func
 //		var_dump($logo);
 
 		$theme = rawurlencode($user->style['style_path']);
-		$template->assign_vars([
+		$template->assign_vars(array(
 			'EXT_TEMPLATE_PATH'		=> $phpbb_root_path . 'ext/phpbbireland/portal/styles/' . $theme,
 			'EXT_IMAGE_PATH'		=> $phpbb_root_path . 'ext/phpbbireland/portal/images/',
 			'MOD_IMAGE_LANG_PATH'	=> $phpbb_root_path . 'ext/phpbbireland/portal/styles/' . $theme . '/theme/' . $user->data['user_lang'] . '/',
 			//'SITE_LOGO_IMG'			=> $logo,
-		]);
+		));
 
 		include_once($phpbb_root_path . 'ext/phpbbireland/portal/includes/sgp_functions.' . $this->php_ext);
 
@@ -137,9 +141,9 @@ class func
 						WHERE user_id = ' . (int) $user->data['user_id'];
 					$db->sql_query($sql);
 					// set switch clear cookies now that we have them stored (we use javascript)//
-					$template->assign_vars([
+					$template->assign_vars(array(
 						'S_CLEAR_CACHE' => true
-					]);
+					));
 				}
 			}
 
@@ -177,31 +181,9 @@ class func
 			$active_blocks[] = $row;
 			$arr[$row['id']] = explode(','  , $row['view_pages']);
 		}
-		$db->sql_freeresult($result);
 
 		$this_page_name = $this->get_current_page();
-
-		$id = $request->variable('style', 0);
-
-		if ($id)
-		{
-			if (strstr($this_page_name, 'portal'))
-			{
-				$page_id = get_page_id('portal');
-			}
-			else if (strstr($this_page_name, 'index'))
-			{
-				$page_id = get_page_id('index');
-			}
-			else
-			{
-				$page_id = get_page_id($this_page_name);
-			}
-		}
-		else
-		{
-			$page_id = get_page_id($this_page_name);
-		}
+		$page_id = get_page_id($this_page_name);
 
 		//var_dump('RETURNED: ' . $this_page_name . ' ID: ' . $page_id);
 
@@ -223,6 +205,7 @@ class func
 				}
 			}
 		}
+		$db->sql_freeresult($result);
 
 		if (!function_exists('group_memberships'))
 		{
@@ -343,7 +326,7 @@ class func
 		{
 			foreach ($left_block_ary as $block => $value)
 			{
-				$template->assign_block_vars('left_block_files', [
+				$template->assign_block_vars('left_block_files', array(
 					'LEFT_BLOCKS'           => $this->build_block_modules($value),
 					'LEFT_BLOCK_ID'         => 'L_' .$left_block_id[$block],
 					'LEFT_BLOCK_TITLE'      => $left_block_title[$block],
@@ -353,7 +336,7 @@ class func
 					'LEFT_BLOCK_IMG_2'      => (file_exists($big_image_path . $left_block_img[$block])) ? $big_image_path  . $left_block_img[$block] : $big_image_path . 'none.png',
 					'S_CONTENT_FLOW_BEGIN'  => ($user->lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
 					'S_CONTENT_FLOW_END'    => ($user->lang['DIRECTION'] == 'ltr') ? 'right' : 'left',
-				]);
+				));
 			}
 		}
 		//unset($left_block_ary);
@@ -362,7 +345,7 @@ class func
 		{
 			foreach ($right_block_ary as $block => $value)
 			{
-				$template->assign_block_vars('right_block_files', [
+				$template->assign_block_vars('right_block_files', array(
 					'RIGHT_BLOCKS'          => $this->build_block_modules($value),
 					'RIGHT_BLOCK_ID'        => 'R_' .$right_block_id[$block],
 					'RIGHT_BLOCK_TITLE'     => $right_block_title[$block],
@@ -372,7 +355,7 @@ class func
 					'RIGHT_BLOCK_IMG_2'     => (file_exists($big_image_path . $right_block_img[$block])) ? $big_image_path  . $right_block_img[$block] : $big_image_path . 'none.png',
 					'S_CONTENT_FLOW_BEGIN'  => ($user->lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
 					'S_CONTENT_FLOW_END'    => ($user->lang['DIRECTION'] == 'ltr') ? 'right' : 'left',
-				]);
+				));
 			}
 		}
 		//unset($right_block_ary);
@@ -381,7 +364,7 @@ class func
 		{
 			foreach ($center_block_ary as $block => $value)
 			{
-				$template->assign_block_vars('center_block_files', [
+				$template->assign_block_vars('center_block_files', array(
 					'CENTER_BLOCKS'        => $this->build_block_modules($value),
 					'CENTER_BLOCK_ID'      => 'C_' .$center_block_id[$block],
 					'CENTER_BLOCK_TITLE'   => $center_block_title[$block],
@@ -391,10 +374,11 @@ class func
 					'CENTER_BLOCK_IMG_2'   => (file_exists($big_image_path . $center_block_img[$block])) ? $big_image_path  . $center_block_img[$block] : $big_image_path . 'none.png',
 					'S_CONTENT_FLOW_BEGIN' => ($user->lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
 					'S_CONTENT_FLOW_END'   => ($user->lang['DIRECTION'] == 'ltr') ? 'right' : 'left',
-				]);
+				));
 			}
 		}
 		//unset($center_block_ary);
+
 
 		$avatar_data = array(
 			'avatar' => $user->data['user_avatar'],
@@ -403,9 +387,10 @@ class func
 			'avatar_type' => $user->data['user_avatar_type'],
 		);
 
+
 		$template->assign_vars(array(
-			'ASSETS_PATH'             => $phpbb_root_path . 'ext/phpbbireland/portal/styles/' . rawurlencode($user->style['style_path']) . '/template/assets/',
-//          'AVATAR'                  => get_user_avatar($user->data['user_avatar'], $user->data['user_avatar_type'], $user->data['user_avatar_width'], $user->data['user_avatar_height']),
+			'ASSETS_PATH'            => $phpbb_root_path . 'ext/phpbbireland/portal/styles/' . rawurlencode($user->style['style_path']) . '/template/assets/',
+			//'AVATAR'                  => get_user_avatar($user->data['user_avatar'], $user->data['user_avatar_type'], $user->data['user_avatar_width'], $user->data['user_avatar_height']),
 			'AVATAR'                  => phpbb_get_avatar($avatar_data, $user->lang['USER_AVATAR'], false),
 			'BLOCK_WIDTH'             => $blocks_width . 'px',
 			'PORTAL_ACTIVE'           => $config['portal_enabled'],
@@ -446,7 +431,7 @@ class func
 	{
 		///var_dump('func.php > build_block_modules(' . $block_file . ') - called for each block!');
 		global $template;
-		$template->set_filenames(['block' => '@phpbbireland_portal' . '/blocks/' . $block_file]);
+		$template->set_filenames(array('block' => '@phpbbireland_portal' . '/blocks/' . $block_file));
 		return $template->assign_display('block', true);
 	}
 
@@ -455,6 +440,7 @@ class func
 	*/
 	public function get_current_page()
 	{
+		///var_dump('func.php > get_current_page()');
 		global $user;
 
 		$this_page = explode(".", $user->page['page']);

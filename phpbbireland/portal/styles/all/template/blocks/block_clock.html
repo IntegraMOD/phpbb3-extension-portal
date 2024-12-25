@@ -1,37 +1,412 @@
 <!-- IDTAG starts block_clock.html 29 January 2022 copyright Prosk8er 2022 -->
-<div class="block_data">
-	<div class="clock">
-		<div class="flipper">
-			<div class="gear"></div>
-			<div class="gear"></div>
-			<div class="topc">
-				<div class="text">00</div>
+<style>
+/* Clock css*/
+
+#clock {
+  width: 30.75em;
+  height: 30.75em;
+  border-radius: 50%;
+  border: solid 2px #11A0E7;
+  margin: auto auto;
+  position: relative;
+  background-color:#E1E8F1;
+}
+#clock div, .faceBox {
+  border: 0;
+  position: absolute;
+  transform-origin: center bottom;
+  -webkit-transform-origin: center bottom;
+  -moz-transform-origin: center bottom;
+  -o-transform-origin: center bottom;
+  transform: rotate(0deg);
+}
+#clock #hour {
+  border-radius: 0.75em 0.75em 0 0;
+  width: 1.5em;
+  height: 6em;
+  top: 9em;
+  left: 14.25em;
+  background-color: #11A0E7;
+  border: solid 1px #486386;
+}
+#clock #minute {
+  border-radius: 0.5em;
+  width: 1em;
+  height: 11em;
+  top: 4em;
+  left: 14.5em;
+  background-color: #11A0E7;
+  border: solid 1px #486386;
+}
+#clock #second {
+  border-radius: 0.25em;
+  width: 0.5em;
+  height: 14em;
+  top: 1em;
+  left: 14.75em;
+  background-color: #11A0E7;
+}
+#clock #center {
+  height: 2em;
+  width: 2em;
+  border-radius: 50%;
+  top: 14em;
+  left: 14em;
+  transform: rotate(0deg);
+  background-color: #11A0E7;
+  border: solid 1px #486386;
+}
+.smallTick {
+  width: 0.1em;
+  height: 0.5em;
+  background-color: #11A0E7;
+  margin: 0 1.45em;
+}
+.mediumTick {
+  width: 0.25em;
+  height: 0.8em;
+  background-color: #11A0E7;
+  margin: 0 1.375em;
+}
+.largeTick {
+  width: 0.4em;
+  height: 0.8em;
+  background-color: #11A0E7;
+  position: relative;
+  margin: 0 1.3em;
+}
+.tickNum {
+  font-family: Arial, sans-serif;
+  font-size: 2em;
+  line-height: 0;
+  color: black;
+  position: relative;
+  top: 1em;
+  left: 0;
+  padding: 0 0.5em;
+}
+div.faceBox {
+  border: 0;
+  width: 3em;
+  height: 15em;
+  top: 0;
+  left: 13.5em;
+  position: absolute;
+  text-align: center;
+  overflow: visible;
+}
+div.cssclock {
+  font-size: 6px;
+  margin: auto;
+}
+
+</style>
+
+<div class="cssclock">
+	    <div id="clock"> 
+	            <div id="hour" style="transform: rotate(515deg);"></div>
+	            <div id="minute" style="transform: rotate(62.6021deg);"></div>
+	            <div id="second" style="transform: rotate(156.126deg);"></div>
+	            <div id="center"></div>
+	        <div class="faceBox" style="transform: rotate(6deg);">
+				<div class="smallTick"></div>
 			</div>
-			<div class="bottomc">
-				<div class="text">00</div>
+			<div class="faceBox" style="transform: rotate(12deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(18deg);">
+				<div class="smallTick"></div>
+			</div>
+				<div class="faceBox" style="transform: rotate(24deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(30deg);">
+				<div class="mediumTick"></div>
+				<div class="tickNum" style="transform: rotate(-30deg);">1</div>
+			</div>
+			<div class="faceBox" style="transform: rotate(36deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(42deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(48deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(54deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(60deg);">
+				<div class="mediumTick"></div>
+				<div class="tickNum" style="transform: rotate(-60deg);">2</div>
+			</div>
+			<div class="faceBox" style="transform: rotate(66deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(72deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(78deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(84deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(90deg);">
+				<div class="largeTick"></div>
+				<div class="tickNum" style="transform: rotate(-90deg);">3</div>
+			</div>
+			<div class="faceBox" style="transform: rotate(96deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(102deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(108deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(114deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(120deg);">
+				<div class="mediumTick"></div>
+				<div class="tickNum" style="transform: rotate(-120deg);">4</div>
+			</div>
+			<div class="faceBox" style="transform: rotate(126deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(132deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(138deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(144deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(150deg);">
+				<div class="mediumTick"></div>
+				<div class="tickNum" style="transform: rotate(-150deg);">5</div>
+			</div>
+			<div class="faceBox" style="transform: rotate(156deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(162deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(168deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(174deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(180deg);">
+				<div class="largeTick"></div>
+				<div class="tickNum" style="transform: rotate(-180deg);">6</div>
+			</div>
+			<div class="faceBox" style="transform: rotate(186deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(192deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(198deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(204deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(210deg);">
+				<div class="mediumTick"></div>
+				<div class="tickNum" style="transform: rotate(-210deg);">7</div>
+			</div>
+			<div class="faceBox" style="transform: rotate(216deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(222deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(228deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(234deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(240deg);">
+				<div class="mediumTick"></div>
+				<div class="tickNum" style="transform: rotate(-240deg);">8</div>
+			</div>
+			<div class="faceBox" style="transform: rotate(246deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(252deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(258deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(264deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(270deg);">
+				<div class="largeTick"></div>
+				<div class="tickNum" style="transform: rotate(-270deg);">9</div>
+			</div>
+			<div class="faceBox" style="transform: rotate(276deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(282deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(288deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(294deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(300deg);">
+				<div class="mediumTick"></div>
+				<div class="tickNum" style="transform: rotate(-300deg); left: -0.3em;">10</div>
+			</div>
+			<div class="faceBox" style="transform: rotate(306deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(312deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(318deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(324deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(330deg);">
+				<div class="mediumTick"></div>
+				<div class="tickNum" style="transform: rotate(-330deg); left: -0.3em;">11</div>
+			</div>
+			<div class="faceBox" style="transform: rotate(336deg);">
+				<div class="smallTick"></div>
+			</div>
+				<div class="faceBox" style="transform: rotate(342deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(348deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(354deg);">
+				<div class="smallTick"></div>
+			</div>
+			<div class="faceBox" style="transform: rotate(360deg);">
+				<div class="largeTick"></div>
+				<div class="tickNum" style="transform: rotate(-360deg); left: -0.3em;">12</div>
 			</div>
 		</div>
-		<div class="flipper">
-			<div class="gear"></div>
-			<div class="gear"></div>
-			<div class="topc">
-				<div class="text">00</div>
-			</div>
-			<div class="bottomc">
-				<div class="text">00</div>
-			</div>
-		</div>
-		<div class="flipper">
-			<div class="gear"></div>
-			<div class="gear"></div>
-			<div class="topc">
-				<div class="text">00</div>
-			</div>
-			<div class="bottomc">
-				<div class="text">00</div>
-			</div>
-		</div>
-	</div>
 </div>
-{% INCLUDEJS '@phpbbireland_portal/assets/clock.js' %}
+
+	<script>
+(function($) {
+    "use strict";
+ 
+    // Ensure jQuery.noConflict() is used
+    $.noConflict();
+ 
+    var Imc = window.Imc || {};
+ 
+    Imc.Clock = (function() {
+        var $hour, $minute, $second;
+ 
+        function updateClockHands() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            var milliseconds = now.getMilliseconds();
+ 
+            var secondDegrees = 6 * seconds + 0.006 * milliseconds;
+            var minuteDegrees = 6 * minutes + 0.1 * seconds + 1e-4 * milliseconds;
+            var hourDegrees = 30 * hours + 0.5 * minutes;
+ 
+            $second.css({ transform: "rotate(" + secondDegrees + "deg)" });
+            $minute.css({ transform: "rotate(" + minuteDegrees + "deg)" });
+            $hour.css({ transform: "rotate(" + hourDegrees + "deg)" });
+ 
+            window.requestAnimationFrame(updateClockHands);
+        }
+ 
+        function createClockFace() {
+            function createTick(i) {
+                var tickClass = "smallTick";
+                var $faceBox = $('<div class="faceBox"></div>');
+                var $tick = $("<div></div>");
+                var $tickNum = $();
+ 
+                if (i % 5 === 0) {
+                    tickClass = i % 15 === 0 ? "largeTick" : "mediumTick";
+                    $tickNum = $('<div class="tickNum"></div>')
+                        .text(i / 5)
+                        .css({ transform: "rotate(-" + (6 * i) + "deg)" });
+ 
+                    if (i >= 50) {
+                        $tickNum.css({ left: "-0.3em" });
+                    }
+                }
+ 
+                $faceBox.append($tick.addClass(tickClass))
+                    .css({ transform: "rotate(" + (6 * i) + "deg)" });
+                $faceBox.append($tickNum);
+ 
+                return $faceBox;
+            }
+ 
+            var $fragment = $(document.createDocumentFragment());
+            for (var i = 1; i <= 60; i++) {
+                $fragment.append(createTick(i));
+            }
+            $("#clock").append($fragment);
+        }
+ 
+        function adjustClockSize() {
+            var $clockContainer = $("#clock").parent();
+            var containerWidth = $clockContainer.width();
+            var fontSize = Math.floor(containerWidth / 30) - 1;
+            fontSize = (fontSize > 15 ? 16 : fontSize) + "px";
+            $("#clock").css({ "font-size": fontSize });
+        }
+ 
+        function setUp() {
+            $hour = $("#hour");
+            $minute = $("#minute");
+            $second = $("#second");
+ 
+            adjustClockSize();
+            createClockFace();
+            updateClockHands();
+ 
+            $(window).on("resize", adjustClockSize);
+        }
+ 
+        // Polyfill for requestAnimationFrame
+        if (!window.requestAnimationFrame) {
+            window.requestAnimationFrame =
+                window.mozRequestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                function(callback) {
+                    setTimeout(callback, 1000 / 60);
+                };
+        }
+ 
+        return {
+            setUp: setUp
+        };
+    })();
+ 
+    $(function() {
+        Imc.Clock.setUp();
+    });
+ 
+})(jQuery);
+</script>
+
 <!-- IDTAG ends block_clock.html -->

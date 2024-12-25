@@ -20,18 +20,22 @@ class release_1_0_2 extends \phpbb\db\migration\migration
 	{
 		return array(
 			array('config.update', array('portal_version', '1.0.2')),
-			array('config.update', array('portal_build', '335-001')),
+			array('config.update', array('portal_build', '310-002')),
 			array('custom', array(array($this, 'seed_db'))),
 		);
 	}
 
-		array(
-			'link'			=> 'github',
-			'url'			=> 'github.com/phpbbireland/portal',
-			'image'			=> 'github.com.png',
-			'active'		=> '1',
-			'open_in_tab'	=> '1',
-		),
+	public function seed_db()
+	{
+		$links_sql = array(
+			array(
+				'link'			=> 'github',
+				'url'			=> 'github.com/phpbbireland/portal',
+				'image'			=> 'github.com.png',
+				'active'		=> '1',
+				'open_in_tab'	=> '1',
+			),
+		);
 		$this->db->sql_multi_insert($this->table_prefix . 'k_link_images', $links_sql);
 	}
 }

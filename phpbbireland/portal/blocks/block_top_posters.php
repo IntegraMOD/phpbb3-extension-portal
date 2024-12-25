@@ -3,7 +3,7 @@
 *
 * Kiss Portal extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 Michael O’Toole <http://www.phpbbireland.com>
+* @copyright (c) 2024 Michael O’Toole <http://www.phpbbireland.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
@@ -17,6 +17,8 @@ if (!defined('IN_PHPBB'))
 }
 
 global $k_config, $k_blocks, $user, $phpEx;
+
+$this->template = $template;
 
 foreach ($k_blocks as $blk)
 {
@@ -49,25 +51,13 @@ while ($row = $db->sql_fetchrow($result))
 		continue;
 	}
 
-	$avatar_data = array(
-		'avatar' => $row['user_avatar'],
-		'avatar_width' => $row['user_avatar_width'],
-		'avatar_height' => $row['user_avatar_height'],
-		'avatar_type' => $row['user_avatar_type'],
-	);
 
-	// resize image to 15x15 //
-	$ava = phpbb_get_avatar($avatar_data, $user->lang['USER_AVATAR'], false);
-	$ava = str_replace('width="' . $row['user_avatar_height'] . '"', 'width="15"', $ava);
-	$ava = str_replace('height="' . $row['user_avatar_width'] . '"', 'height="15"', $ava);
-
-	$this->template->assign_block_vars('top_posters', array(
+	$this->template->assign_block_vars('top_posters', [
 		'S_SEARCH_ACTION'	=> append_sid("{$this->phpbb_root_path}search.$phpEx", 'author_id=' . $row['user_id'] . '&amp;sr=posts'),
-		'USERNAME_FULL'		=> get_username_string('full', $row['user_id'], sgp_checksize($row['username'],15), $row['user_colour']),
+		'USERNAME_FULL'		=> @get_username_string('full', $row['user_id'], sgp_checksize($row['username'],15), $row['user_colour']),
 		'POSTER_POSTS'		=> $row['user_posts'],
-		//'USER_AVATAR_IMG'	=> get_user_avatar($row['user_avatar'], $row['user_avatar_type'], '16', '16', $this->user->lang['USER_AVATAR']),
-		'USER_AVATAR_IMG'	=> $ava,
+		'USER_AVATAR_IMG'	=> phpbb_get_user_avatar($row, $user->lang['USER_AVATAR'], false),
 		//'URL'				=> $row['user_website'],
-	));
+	]);
 }
 $db->sql_freeresult($result);

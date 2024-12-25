@@ -3,23 +3,15 @@
 *
 * Kiss Portal extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 Michael O’Toole <http://www.phpbbireland.com>
+* @copyright (c) 2024 Michael O’Toole <http://www.phpbbireland.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
 
-if (!defined('IN_PHPBB'))
-{
-	exit;
-}
+//$auth->acl($user->data);
 
-$phpEx = substr(strrchr(__FILE__, '.'), 1);
+global $user, $forum_id, $phpbb_root_path, $phpEx, $SID, $config, $template, $k_config, $k_blocks, $db, $web_path, $phpbb_container;
 
-$auth->acl($user->data);
-
-global $user, $forum_id, $phpbb_root_path, $phpEx, $SID, $config, $template, $k_config, $k_blocks, $db, $web_path;
-
-global $phpbb_container;
 $phpbb_content_visibility = $phpbb_container->get('content.visibility');
 
 foreach ($k_blocks as $blk)
@@ -30,8 +22,11 @@ foreach ($k_blocks as $blk)
 		break;
 	}
 }
+
 $block_cache_time = (isset($block_cache_time) ? $block_cache_time : $k_config['k_block_cache_time_default']);
 
+
+/*
 if (!defined('POST_TOPIC_URL'))
 {
 	define('POST_TOPIC_URL' , 't');
@@ -40,10 +35,7 @@ if (!defined('POST_CAT_URL'))
 {
 	define('POST_CAT_URL', 'c');
 }
-if (!defined('POST_FORUM_URL'))
-{
-	define('POST_FORUM_URL', 'f');
-}
+
 if (!defined('POST_USERS_URL'))
 {
 	define('POST_USERS_URL', 'u');
@@ -56,14 +48,21 @@ if (!defined('POST_GROUPS_URL'))
 {
 	define('POST_GROUPS_URL', 'g');
 }
+*/
+
+
+if (!defined('POST_FORUM_URL'))
+{
+	define('POST_FORUM_URL', 'f');
+}
 
 /***
 	Could add option to show a simplified listing (without categories or forum grouping)
 	Basically just show most recent topics unsorted... (requested)
 ***/
 
-// set up variables used //
 
+// set up variables used //
 $forum_count = $row_count = 0;
 $valid_forum_ids = array();
 
@@ -81,12 +80,10 @@ $sql = "SELECT html_file_name, scroll, position
 	FROM " . K_BLOCKS_TABLE . "
 	WHERE html_file_name = 'block_recent_topics_wide.html'";
 
-$result = $db->sql_query($sql);
+//$result = $db->sql_query($sql);
 
 
-//if ($result = $db->sql_query($sql, $block_cache_time))
-
-if ($result)
+if ($result = $db->sql_query($sql, $block_cache_time))
 {
 	$row = $db->sql_fetchrow($result);
 	$scroll = $row['scroll'];
@@ -94,7 +91,7 @@ if ($result)
 }
 else
 {
-	trigger_error('ERROR_PORTAL_BLOCKS' . '99');
+	trigger_error('ERROR_PORTAL_BLOCKS' . '102');
 }
 $db->sql_freeresult($result);
 
@@ -104,10 +101,9 @@ $sql = "SELECT * FROM ". FORUMS_TABLE . " ORDER BY forum_id";
 
 $result = $db->sql_query($sql);
 
-if (!$result)
-//if (!$result = $db->sql_query($sql, $block_cache_time))
+if (!$result = $db->sql_query($sql, $block_cache_time))
 {
-	trigger_error($user->lang['ERROR_PORTAL_FORUMS'] . '117');
+	trigger_error($user->lang['ERROR_PORTAL_FORUMS'] . '111');
 }
 
 /* don't show these (set in ACP) */
@@ -150,47 +146,36 @@ else
 
 $post_time_days = time() - 86400 * $k_recent_search_days;
 
-// New code //
-$sql_array = array(
-	'SELECT'		=> 'p.post_id, t.*, p.post_edit_time, p.post_subject, p.post_text, p.post_time, p.bbcode_bitfield, p.bbcode_uid, f.forum_desc, u.user_avatar, u.user_avatar_type, u.user_avatar_height, u.user_avatar_width, f.forum_name',
+// New code //user_avatar, user_avatar_type, user_avatar_width , user_avatar_height
+$sql_array = [
+	'SELECT'		=> 'p.post_id, t.*, p.post_edit_time, p.post_subject, p.post_text, p.post_time, p.bbcode_bitfield, p.bbcode_uid, f.forum_desc, u.user_avatar, u.user_avatar_type, u.user_avatar_width, u.user_avatar_height, f.forum_name',
 
-	'FROM'			=> array(FORUMS_TABLE => 'f'),
+	'FROM'			=> [FORUMS_TABLE => 'f'],
 
-	'LEFT_JOIN'		=> array(
-		array(
-			'FROM'	=> array(TOPICS_TABLE => 't'),
+	'LEFT_JOIN'		=> [
+		[
+			'FROM'	=> [TOPICS_TABLE => 't'],
 			'ON'	=> "f.forum_id = t.forum_id",
-		),
-		array(
-			'FROM'	=> array(POSTS_TABLE => 'p'),
+		],
+		[
+			'FROM'	=> [POSTS_TABLE => 'p'],
 			'ON'	=> "t.topic_id = p.topic_id",
-		),
-		array(
-			'FROM'	=> array(USERS_TABLE => 'u'),
+		],
+		[
+			'FROM'	=> [USERS_TABLE => 'u'],
 			'ON'	=> "t.topic_last_poster_id = u.user_id",
-		),
-	),
+		],
+	],
 
 	'WHERE'	=> $where_sql . '
 		' . $types_sql . '
 		AND p.post_id = t.topic_last_post_id
 		AND (p.post_time >= ' . $post_time_days . ' OR p.post_edit_time >= ' . $post_time_days . ')
 			ORDER BY t.forum_id, p.post_time DESC'
-/*
-	'WHERE'	=> $where_sql . '
-		AND t.topic_approved = 1
-		AND p.post_approved = 1
-		' . $types_sql . '
-		AND p.post_id = t.topic_first_post_id
-		AND (t.topic_last_post_time >= ' . $post_time_days . '
-			OR p.post_edit_time >= ' . $post_time_days . ')
-			ORDER BY t.forum_id, t.topic_last_post_time DESC'
-*/
-
-
-);
+];
 
 $sql = $db->sql_build_query('SELECT', $sql_array);
+
 $result = $db->sql_query_limit($sql, $display_this_many, 0, $block_cache_time);
 
 $row = $db->sql_fetchrowset($result);
@@ -226,7 +211,7 @@ if ($scroll)
 }
 
 
-$next_img = '<img src="' . $phpbb_root_path . 'images/next_line.gif" height="9" width="11" alt="" />';
+//$next_img = '<img src="' . $phpbb_root_path . 'images/next_line.gif" height="9" width="11" alt="" />';
 
 
 $tn = time();
@@ -261,14 +246,14 @@ for ($i = 0; $i < $display_this_many; $i++)
 
 	if (strlen($my_title) > 25)
 	{
-		sgp_checksize ($my_title, 25);
+		sgp_checksize($my_title, 25);
 	}
 
 	$forum_name = $row[$i]['forum_name'];
 
 	if (strlen($forum_name) > 25)
 	{
-		$forum_name = sgp_checksize ($forum_name, 25);
+		$forum_name = sgp_checksize($forum_name, 25);
 	}
 
 	$view_topic_url = append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $row[$i]['forum_id']);
@@ -282,22 +267,8 @@ for ($i = 0; $i < $display_this_many; $i++)
 		$this_post_time = $user->format_date($row[$i]['post_time']);
 	}
 
-
-	$avatar_data = array(
-		'avatar' => $row[$i]['user_avatar'],
-		'avatar_width' => $row[$i]['user_avatar_width'],
-		'avatar_height' => $row[$i]['user_avatar_height'],
-		'avatar_type' => $row[$i]['user_avatar_type'],
-	);
-
-	// resize image to 15x15 //
-	$ava = phpbb_get_avatar($avatar_data, $user->lang['USER_AVATAR'], false);
-	$ava = str_replace('width="' . $row[$i]['user_avatar_height'] . '"', 'width="15"', $ava);
-	$ava = str_replace('height="' . $row[$i]['user_avatar_width'] . '"', 'height="15"', $ava);
-
-	$template->assign_block_vars($style_row . 'recent_topic_row', array(
-		//'AVATAR_SMALL_IMG'	=> get_user_avatar($row[$i]['user_avatar'], $row[$i]['user_avatar_type'], '15', '15'),
-		'AVATAR_SMALL_IMG'	=> $ava,
+	$template->assign_block_vars($style_row . 'recent_topic_row', [
+		'AVATAR_SMALL_IMG'	=> phpbb_get_user_avatar($row[$i], $user->lang['USER_AVATAR'], false),
 		'FORUM_W'			=> $forum_name,
 		'LAST_POST_IMG_W'	=> $user->img('icon_topic_newest', 'VIEW_LATEST_POST'),
 		//'LAST_POST_IMG_W'	=> $next_img,
@@ -316,7 +287,7 @@ for ($i = 0; $i < $display_this_many; $i++)
 		//'TOOLTIP2_W'		=> bbcode_strip($row[$i]['forum_desc']),
 		'S_PC'              => $thisd,
 		'SS' => $tn - $pd,
-	));
+	]);
 
 	$last_forum = $row[$i]['forum_id'];
 }
@@ -330,9 +301,8 @@ else
 	$post_or_posts = strtolower($user->lang['TOPIC']);
 }
 
-$template->assign_vars(array(
+$template->assign_vars([
 	'S_COUNT_RECENT'		=> ($i > 0) ? true : false,
-	'RECENT_SEARCH_TYPE'	=> sprintf($user->lang['K_RECENT_SEARCH_DAYS'], $k_recent_search_days),
+    'RECENT_SEARCH_TYPE' => sprintf(isset($user->lang['K_RECENT_SEARCH_DAYS']) ? $user->lang['K_RECENT_SEARCH_DAYS'] : 'Recent search days: %d', $k_recent_search_days),
 	'S_FULL_LEGEND'			=> ($k_post_types) ? true : false,
-	//'RECENT_TOPICS_WIDE_DEBUG'	=> sprintf($user->lang['PORTAL_DEBUG_QUERIES'], ($queries) ? $queries : '0', ($cached_queries) ? $cached_queries : '0', ($total_queries) ? $total_queries : '0'),
-));
+]);

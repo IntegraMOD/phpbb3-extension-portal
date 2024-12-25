@@ -3,7 +3,7 @@
 *
 * Kiss Portal extension for the phpBB Forum Software package.
 *
-* @copyright (c) 2014 Michael O’Toole <http://www.phpbbireland.com>
+* @copyright (c) 2024 Michael O’Toole <http://www.phpbbireland.com>
 * @license GNU General Public License, version 2 (GPL-2.0)
 *
 */
@@ -158,11 +158,6 @@ while ($row = $db->sql_fetchrow($result))
 		{
 			global $cache;
 
-			if (!class_exists('cache'))
-			{
-				include($phpbb_root_path . 'includes/cache.' . $phpEx);
-			}
-
 			$attach_array[$j++] = $row['post_id'];
 
 			if (empty($extensions) || !is_array($extensions))
@@ -172,7 +167,10 @@ while ($row = $db->sql_fetchrow($result))
 		}
 	}
 }
+
 $db->sql_freeresult($result);
+
+
 
 // Pull attachment data
 if (sizeof($attach_list))
@@ -202,6 +200,7 @@ if ($bbcode_bitfield !== '')
 {
 	$bbcode = new bbcode(base64_encode($bbcode_bitfield));
 }
+
 
 $image_path = $mod_root_path . 'styles/all/theme/images/';
 
@@ -279,8 +278,8 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		foreach ($attachments[$row['post_id']] as $attachment)
 		{
 			$this->template->assign_block_vars('announce_row.attachment', array(
-				'DISPLAY_ATTACHMENT'	=> $attachment)
-			);
+				'DISPLAY_ATTACHMENT'	=> $attachment
+			));
 		}
 	}
 
@@ -294,7 +293,6 @@ $message = '';
 $this->template->assign_vars(array(
 	'S_ANNOUNCEMENTS_COUNT_ASKED'		=> sizeof($posts),
 	'S_ANNOUNCEMENTS_COUNT_RETURNED'	=> sizeof($post_list),
-	//'ANNOUNCEMENYS_DEBUG'				=> sprintf($user->lang['PORTAL_DEBUG_QUERIES'], ($queries) ? $queries : '0', ($cached_queries) ? $cached_queries : '0', ($total_queries) ? $total_queries : '0'),
 ));
 
 // END: Fetch Announcements //

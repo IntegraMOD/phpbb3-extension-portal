@@ -50,7 +50,7 @@ if (!function_exists('sgp_get_rand_logo'))
 		$imgs ="";
 
 		// Random logos are disabled config, so return default logo //
-		if ($k_config['k_allow_rotating_logos'] == 0)
+		if (isset($k_config['k_allow_rotating_logos']) && $k_config['k_allow_rotating_logos'] == 0)
 		{
 			return $user->img('site_logo');
 		}
